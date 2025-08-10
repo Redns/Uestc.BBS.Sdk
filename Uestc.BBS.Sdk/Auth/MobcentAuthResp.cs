@@ -2,19 +2,20 @@
 
 namespace Uestc.BBS.Sdk.Auth
 {
+    /// <summary>
+    /// 移动端登录认证响应
+    /// </summary>
     public class MobcentAuthResp : MobcentApiRespBase
     {
         #region Authorization
         public int GroupId { get; set; } = 0;
+
         public int IsValidation { get; set; } = 0;
 
         public string Token { get; set; } = string.Empty;
 
         public string Secret { get; set; } = string.Empty;
         #endregion
-
-        [JsonIgnore]
-        public bool Success => Rs is 1;
 
         public int Score { get; set; } = 0;
 
@@ -43,6 +44,10 @@ namespace Uestc.BBS.Sdk.Auth
     }
 
     [JsonSerializable(typeof(MobcentAuthResp))]
-    [JsonSourceGenerationOptions(WriteIndented = true, PropertyNameCaseInsensitive = true)]
+    [JsonSourceGenerationOptions(
+        WriteIndented = true,
+        PropertyNameCaseInsensitive = true,
+        PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase
+    )]
     public partial class AuthRespContext : JsonSerializerContext { }
 }

@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uestc.BBS.Sdk", "Uestc.BBS.Sdk\Uestc.BBS.Sdk.csproj", "{D7348C69-0B9E-409F-9519-1F5DF4C2FECF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uestc.BBS.Sdk.Test", "Uestc.BBS.Sdk.Test\Uestc.BBS.Sdk.Test.csproj", "{606D64CD-CF3A-42D5-9BC1-3FB4DBE6F925}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uestc.BBS.Sdk.Tests", "Uestc.BBS.Sdk.Tests\Uestc.BBS.Sdk.Tests.csproj", "{606D64CD-CF3A-42D5-9BC1-3FB4DBE6F925}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

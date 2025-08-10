@@ -1,5 +1,8 @@
 ﻿namespace Uestc.BBS.Sdk
 {
+    /// <summary>
+    /// API 地址
+    /// </summary>
     public static class ApiEndpoints
     {
         /// <summary>
@@ -7,6 +10,7 @@
         /// </summary>
         public const string BASE_URL = "https://bbs.uestc.edu.cn";
 
+        #region 登录相关
         /// <summary>
         /// 获取 Cookie
         /// </summary>
@@ -18,6 +22,43 @@
         /// </summary>
         public const string GET_AUTHORIZATION_URL = "star/api/v1/auth/adoptLegacyAuth";
 
+        /// <summary>
+        /// 获取 Mobcent token
+        /// </summary>
         public const string GET_MOBCENT_TOKEN_URL = "mobcent/app/web/index.php?r=user/login";
+        #endregion
+
+        #region 论坛相关
+        /// <summary>
+        /// 获取首页信息
+        /// </summary>
+        public const string FORUM_HOME_URL = "star/api/v1/index?global_stat=1&announcement=1";
+        #endregion
+
+        #region 主题相关
+        /// <summary>
+        /// 获取首页主题列表
+        /// </summary>
+        public const string FORUM_TOPLIST_URL = "star/api/v1/forum/toplist";
+
+        /// <summary>
+        /// 获取首页主题列表（移动端）
+        /// </summary>
+        public const string FORUM_MOBILE_TOPLIST_URL = "star/api/v1/forum/mobileToplist";
+        #endregion
+
+        #region 消息相关
+        /// <summary>
+        /// 获取通知列表
+        /// </summary>
+        public const string NOTIFICATIONS_URL = "star/api/v1/messages/notifications";
+        #endregion
+
+        #region 用户相关
+        /// <summary>
+        /// 用户头像
+        /// </summary>
+        public const string USER_AVATAR_URL = "uc_server/data/avatar/000";
+        #endregion
     }
 }

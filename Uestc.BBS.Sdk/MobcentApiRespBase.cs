@@ -2,9 +2,18 @@
 
 namespace Uestc.BBS.Sdk
 {
+    /// <summary>
+    /// Mobcent API 响应基类
+    /// </summary>
     public class MobcentApiRespBase
     {
         public int Rs { get; set; } = 0;
+
+        /// <summary>
+        /// 是否成功
+        /// </summary>
+        [JsonIgnore]
+        public bool Success => Rs is 1;
 
         public string ErrCode { get; set; } = string.Empty;
 
