@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Uestc.BBS.Sdk.Auth;
-using Uestc.BBS.Sdk.Forum;
-using Uestc.BBS.Sdk.Thread;
+using Uestc.BBS.Sdk.Services.Auth;
+using Uestc.BBS.Sdk.Services.Forum;
+using Uestc.BBS.Sdk.Services.System;
+using Uestc.BBS.Sdk.Services.Thread;
+using Uestc.BBS.Sdk.Services.Thread.ThreadList;
 
 namespace Uestc.BBS.Sdk
 {
@@ -21,6 +23,32 @@ namespace Uestc.BBS.Sdk
             {
                 client.BaseAddress = new Uri(baseUrl);
             });
+
+        /// <summary>
+        /// 注册 <see cref="IThreadListService"/> 实例
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="baseUrl"></param>
+        /// <returns></returns>
+        public static IHttpClientBuilder AddThreadListService(
+            this IServiceCollection services,
+            string baseUrl = ApiEndpoints.BASE_URL
+        ) =>
+            services.AddHttpClient<IThreadListService, WebThreadListService>(
+                (services, client) =>
+                {
+                    var authCredential = services.GetService<AuthCredential>();
+                    if (authCredential != null)
+                    {
+                        client.DefaultRequestHeaders.Add("Cookie", authCredential.Cookie);
+                        client.DefaultRequestHeaders.TryAddWithoutValidation(
+                            "Authorization",
+                            authCredential.Authorization
+                        );
+                    }
+                    client.BaseAddress = new Uri(baseUrl);
+                }
+            );
 
         /// <summary>
         /// 注册 <see cref="IForumHomeService"/> 实例
@@ -71,6 +99,17 @@ namespace Uestc.BBS.Sdk
                             authCredential.Authorization
                         );
                     }
+                    client.BaseAddress = new Uri(baseUrl);
+                }
+            );
+
+        public static IHttpClientBuilder AddDailySentencesService(
+            this IServiceCollection services,
+            string baseUrl = ApiEndpoints.BASE_URL
+        ) =>
+            services.AddHttpClient<IDailySentenceService, DailySentenceService>(
+                (services, client) =>
+                {
                     client.BaseAddress = new Uri(baseUrl);
                 }
             );

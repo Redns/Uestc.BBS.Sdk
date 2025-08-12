@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Uestc.BBS.Sdk.Forum
+namespace Uestc.BBS.Sdk.Services.Forum
 {
     /// <summary>
     /// 论坛首页服务

@@ -1,4 +1,4 @@
-﻿namespace Uestc.BBS.Sdk.Auth
+﻿namespace Uestc.BBS.Sdk.Services.Auth
 {
     /// <summary>
     /// 认证服务接口

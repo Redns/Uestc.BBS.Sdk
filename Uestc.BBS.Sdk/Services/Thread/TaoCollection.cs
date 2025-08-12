@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Uestc.BBS.Sdk.JsonConverters;
 
-namespace Uestc.BBS.Sdk.Thread
+namespace Uestc.BBS.Sdk.Services.Thread
 {
     /// <summary>
     /// 淘专辑

@@ -1,8 +1,7 @@
 ﻿using System.Security.Authentication;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
-namespace Uestc.BBS.Sdk.Auth
+namespace Uestc.BBS.Sdk.Services.Auth
 {
     /// <summary>
     /// 认证服务
@@ -81,9 +80,7 @@ namespace Uestc.BBS.Sdk.Auth
                     ),
                     cancellationToken
                 )
-                .ContinueWith(t =>
-                t.Result.EnsureSuccessStatusCode(), 
-                cancellationToken);
+                .ContinueWith(t => t.Result.EnsureSuccessStatusCode(), cancellationToken);
             var cookie = string.Join(
                 ";",
                 cookieResp.Headers.GetValues("Set-Cookie").Select(c => c.Split(';').First())
@@ -154,20 +151,4 @@ namespace Uestc.BBS.Sdk.Auth
                 ?? throw new AuthenticationException("Mobcent token get failed, response is null.");
         }
     }
-
-    public class Authorization
-    {
-        [JsonPropertyName("authorization")]
-        public string Token { get; set; } = string.Empty;
-    }
-
-    public class AuthorizationResp : ApiRespBase<Authorization> { }
-
-    [JsonSerializable(typeof(AuthorizationResp))]
-    [JsonSourceGenerationOptions(
-        WriteIndented = true,
-        PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-        PropertyNameCaseInsensitive = true
-    )]
-    public partial class AuthorizationRespContext : JsonSerializerContext { }
 }

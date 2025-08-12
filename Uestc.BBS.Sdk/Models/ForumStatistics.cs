@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
+using Uestc.BBS.Sdk.Services.User;
 
-namespace Uestc.BBS.Sdk.Forum
+namespace Uestc.BBS.Sdk.Models
 {
     /// <summary>
     /// 论坛统计信息

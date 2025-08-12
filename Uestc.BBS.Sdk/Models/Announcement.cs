@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using Uestc.BBS.Sdk.JsonConverters;
 
-namespace Uestc.BBS.Sdk.Forum
+namespace Uestc.BBS.Sdk.Models
 {
     /// <summary>
     /// 公告

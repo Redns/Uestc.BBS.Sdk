@@ -1,8 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 using FastEnumUtility;
 using Uestc.BBS.Sdk.JsonConverters;
+using Uestc.BBS.Sdk.Models;
 
-namespace Uestc.BBS.Sdk.Thread
+namespace Uestc.BBS.Sdk.Services.Thread
 {
     /// <summary>
     /// 主题（帖子）
@@ -28,21 +29,28 @@ namespace Uestc.BBS.Sdk.Thread
         public uint Type { get; set; }
 
         /// <summary>
-        /// 发帖人
-        /// </summary>
-        public string Author { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 发帖人 ID
+        /// Uid
         /// </summary>
         [JsonPropertyName("author_id")]
-        public uint AuthorId { get; set; }
+        public uint Uid { get; set; }
+
+        /// <summary>
+        /// 发帖人
+        /// </summary>
+        [JsonPropertyName("author")]
+        public string Username { get; set; } = string.Empty;
 
         /// <summary>
         /// 标题
         /// </summary>
         [JsonPropertyName("subject")]
         public string Title { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 摘要
+        /// </summary>
+        [JsonPropertyName("summary")]
+        public string Subject { get; set; } = string.Empty;
 
         /// <summary>
         /// 创建时间
@@ -111,14 +119,21 @@ namespace Uestc.BBS.Sdk.Thread
         public uint CanReply { get; set; }
 
         /// <summary>
-        /// TODO 显示顺序，采用枚举
+        /// 显示顺序，大于 0 时表示置顶
         /// </summary>
         public uint DisplayOrder { get; set; }
+
+        /// <summary>
+        /// 是否置顶
+        /// </summary>
+        [JsonIgnore]
+        public bool IsTop => DisplayOrder > 0;
 
         /// <summary>
         /// 是否被加水
         /// </summary>
         [JsonPropertyName("is_rated")]
+        [JsonConverter(typeof(UintToBoolConverter))]
         public bool IsRated { get; set; }
 
         /// <summary>
@@ -127,27 +142,25 @@ namespace Uestc.BBS.Sdk.Thread
         public uint Special { get; set; }
 
         /// <summary>
-        /// TODO WHAT'S THIS?
-        /// </summary>
-        public uint Attachment { get; set; }
-
-        /// <summary>
         /// 是否被有形的大手操作过（移动/合并/分类/删除回复/……）
         /// 例如：https://bbs.uestc.edu.cn/thread/2264922 本主题由 ____ 于 星期一 20:56 合并
         /// </summary>
         [JsonPropertyName("is_moderated")]
+        [JsonConverter(typeof(UintToBoolConverter))]
         public bool IsModerated { get; set; }
 
         /// <summary>
         /// 是否有置顶回复
         /// </summary>
         [JsonPropertyName("has_stick_reply")]
+        [JsonConverter(typeof(UintToBoolConverter))]
         public bool HasStickReply { get; set; }
 
         /// <summary>
         /// 是否关闭
         /// </summary>
         [JsonPropertyName("is_closed")]
+        [JsonConverter(typeof(UintToBoolConverter))]
         public bool IsClosed { get; set; }
 
         /// <summary>
@@ -174,6 +187,19 @@ namespace Uestc.BBS.Sdk.Thread
         /// TODO WHAT'S THIS?
         /// </summary>
         public uint Cover { get; set; }
+
+        /// <summary>
+        /// 是否有附件（注意：此字段含义没有文档解释，笔者测试时发现包含附件时值为 2，不包含时值为 0）
+        /// </summary>
+        [JsonPropertyName("attachment")]
+        [JsonConverter(typeof(UintToBoolConverter))]
+        public bool HasAttachment { get; set; }
+
+        /// <summary>
+        /// 主题附件
+        /// </summary>
+        [JsonPropertyName("summary_attachments")]
+        public Attachment[] Attachments { get; set; } = [];
 
         /// <summary>
         /// 淘专辑列表

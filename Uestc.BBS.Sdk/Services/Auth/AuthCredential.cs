@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Uestc.BBS.Sdk.Auth
+namespace Uestc.BBS.Sdk.Services.Auth
 {
     public class AuthCredential
     {

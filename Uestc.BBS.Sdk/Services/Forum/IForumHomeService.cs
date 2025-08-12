@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
+using Uestc.BBS.Sdk.Models;
 
-namespace Uestc.BBS.Sdk.Forum
+namespace Uestc.BBS.Sdk.Services.Forum
 {
     /// <summary>
     /// 论坛首页服务

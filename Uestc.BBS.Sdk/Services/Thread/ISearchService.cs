@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Uestc.BBS.Sdk.Thread
+namespace Uestc.BBS.Sdk.Services.Thread
 {
     public interface ISearchService
     {

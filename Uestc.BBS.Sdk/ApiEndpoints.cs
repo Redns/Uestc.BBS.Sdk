@@ -33,25 +33,35 @@
         /// 获取首页信息
         /// </summary>
         public const string FORUM_HOME_URL = "star/api/v1/index?global_stat=1&announcement=1";
+
+        /// <summary>
+        /// 获取每日一句
+        /// </summary>
+        public const string GET_DAILY_SENTENCE_URL = "forum.php?mobile=no";
         #endregion
 
         #region 主题相关
         /// <summary>
         /// 获取首页主题列表
         /// </summary>
-        public const string FORUM_TOPLIST_URL = "star/api/v1/forum/toplist";
+        public const string GET_THREAD_TOPLIST_URL = "star/api/v1/forum/toplist";
+
+        /// <summary>
+        /// 获取主题列表
+        /// </summary>
+        public const string GET_THREAD_LIST_URL = "star/api/v1/thread/list";
 
         /// <summary>
         /// 获取首页主题列表（移动端）
         /// </summary>
-        public const string FORUM_MOBILE_TOPLIST_URL = "star/api/v1/forum/mobileToplist";
+        public const string GET_THREAD_MOBILE_TOPLIST_URL = "star/api/v1/forum/mobileToplist";
         #endregion
 
         #region 消息相关
         /// <summary>
         /// 获取通知列表
         /// </summary>
-        public const string NOTIFICATIONS_URL = "star/api/v1/messages/notifications";
+        public const string GET_NOTIFICATIONS_URL = "star/api/v1/messages/notifications";
         #endregion
 
         #region 用户相关

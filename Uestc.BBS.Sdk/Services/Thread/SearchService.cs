@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Uestc.BBS.Sdk.Thread
+namespace Uestc.BBS.Sdk.Services.Thread
 {
     public class SearchService(HttpClient client) : ISearchService
     {
