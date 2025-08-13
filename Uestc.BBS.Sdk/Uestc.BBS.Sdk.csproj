@@ -10,7 +10,9 @@
 
   <ItemGroup>
     <PackageReference Include="FastEnum" Version="2.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0-preview.6.25358.103" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
   </ItemGroup>
 
 </Project>

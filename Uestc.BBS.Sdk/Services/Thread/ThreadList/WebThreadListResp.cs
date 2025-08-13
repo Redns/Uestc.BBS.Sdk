@@ -2,39 +2,39 @@
 
 namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
 {
-    public class ThreadListResp : ApiRespBase<ThreadListData> { }
+    public class WebThreadListResp : ApiRespBase<WebThreadListData> { }
 
-    public class ThreadListData
+    public class WebThreadListData
     {
+        /// <summary>
+        /// 主题数量
+        /// </summary>
+        [JsonPropertyName("total")]
+        public uint TotalCount { get; set; }
+
         /// <summary>
         /// Page
         /// </summary>
         public uint Page { get; set; }
 
         /// <summary>
-        /// Page Size
+        /// PageSize
         /// </summary>
         [JsonPropertyName("page_size")]
         public uint PageSize { get; set; }
 
         /// <summary>
-        /// 主题总数
-        /// </summary>
-        [JsonPropertyName("total")]
-        public uint TotalCount { get; set; }
-
-        /// <summary>
         /// 主题列表
         /// </summary>
         [JsonPropertyName("rows")]
-        public Thread[] Threads { get; set; } = [];
+        public WebThreadOverview[] Threads { get; set; } = [];
     }
 
-    [JsonSerializable(typeof(ThreadListResp))]
+    [JsonSerializable(typeof(WebThreadListResp))]
     [JsonSourceGenerationOptions(
         WriteIndented = true,
         PropertyNameCaseInsensitive = true,
         PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase
     )]
-    public partial class ThreadListRespContext : JsonSerializerContext { }
+    public partial class WebThreadListRespContext : JsonSerializerContext { }
 }

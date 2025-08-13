@@ -1,7 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Uestc.BBS.Sdk.Services.System;
-using Uestc.BBS.Sdk.Services.Thread;
-using Uestc.BBS.Sdk.Services.Thread.ThreadList;
 
 namespace Uestc.BBS.Sdk.Tests
 {
@@ -15,13 +13,13 @@ namespace Uestc.BBS.Sdk.Tests
         {
             var collection = new ServiceCollection();
 
-            collection.AddDailySentencesService(BASRE_URL);
+            collection.AddDailySentencesService(services => new Uri(BASRE_URL));
 
             _services = collection.BuildServiceProvider();
         }
 
         [Fact]
-        public async Task GetThreadListAsyncTest()
+        public async Task GetDailySentenceAsyncTest()
         {
             var dailysentenceService = _services.GetRequiredService<IDailySentenceService>();
             var dailysentence = await dailysentenceService.GetDailySentenceAsync();

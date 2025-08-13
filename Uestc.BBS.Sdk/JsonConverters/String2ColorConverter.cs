@@ -19,7 +19,7 @@ namespace Uestc.BBS.Sdk.JsonConverters
 
             return string.IsNullOrEmpty(hex) || !hex.StartsWith('#')
                 ? Color.Empty
-                : Color.FromArgb(Convert.ToInt32(hex, 16));
+                : Color.FromArgb(Convert.ToInt32(hex[1..], 16));
         }
 
         public override void Write(

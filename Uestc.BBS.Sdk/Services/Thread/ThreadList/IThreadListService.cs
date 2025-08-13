@@ -4,12 +4,28 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
 {
     public interface IThreadListService
     {
-        Task<Thread[]> GetThreadListAsync(
+        /// <summary>
+        /// 获取指定版块的帖子列表
+        /// </summary>
+        /// <param name="route"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="boardId">板块 ID</param>
+        /// <param name="moduleId"></param>
+        /// <param name="typeId">板块子分类 ID，为 0 时获取板块下所有主题</param>
+        /// <param name="sortby">最新发表/最新回复/精华</param>
+        /// <param name="topOrder">置顶帖设置</param>
+        /// <param name="getPreviewSources">获取预览图像</param>
+        /// <param name="getPartialReply">获取部分回复</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IEnumerable<ThreadOverview>> GetThreadListAsync(
             string? route = null,
             uint page = 1,
             uint pageSize = 10,
-            uint moduleId = 2,
             Board boardId = 0,
+            uint moduleId = 2,
+            uint typeId = 0,
             TopicSortType sortby = TopicSortType.New,
             TopicTopOrder topOrder = TopicTopOrder.WithoutTop,
             bool getPreviewSources = false,

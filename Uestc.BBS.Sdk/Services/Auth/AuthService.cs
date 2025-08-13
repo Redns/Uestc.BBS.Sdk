@@ -45,6 +45,8 @@ namespace Uestc.BBS.Sdk.Services.Auth
                         credential.Uid = t.Result.Uid;
                         credential.Token = t.Result.Token;
                         credential.Secret = t.Result.Secret;
+                        credential.Avatar = t.Result.Avatar;
+                        credential.Level = t.Result.UserTitleLevel;
                     },
                     CancellationToken.None
                 );

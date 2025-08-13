@@ -10,6 +10,8 @@
         /// </summary>
         public const string BASE_URL = "https://bbs.uestc.edu.cn";
 
+        public static readonly Uri BaseUri = new(BASE_URL);
+
         #region 登录相关
         /// <summary>
         /// 获取 Cookie
@@ -54,7 +56,12 @@
         /// <summary>
         /// 获取首页主题列表（移动端）
         /// </summary>
-        public const string GET_THREAD_MOBILE_TOPLIST_URL = "star/api/v1/forum/mobileToplist";
+        public const string GET_MOBILE_HOME_THREAD_LIST_URL = "mobcent/app/web/index.php";
+
+        /// <summary>
+        /// 获取主题内容（移动端）
+        /// </summary>
+        public const string GET_MOBILE_THREAD_CONTENT_URL = "mobcent/app/web/index.php";
         #endregion
 
         #region 消息相关

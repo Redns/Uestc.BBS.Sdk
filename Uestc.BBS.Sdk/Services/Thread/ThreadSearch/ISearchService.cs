@@ -37,7 +37,7 @@ namespace Uestc.BBS.Sdk.Services.Thread
         /// 主题列表
         /// </summary>
         [JsonPropertyName("rows")]
-        public Thread[] Threads { get; set; } = [];
+        public ThreadOverview[] Threads { get; set; } = [];
     }
 
     [JsonSerializable(typeof(ApiRespBase<ThreadSearchResult>))]

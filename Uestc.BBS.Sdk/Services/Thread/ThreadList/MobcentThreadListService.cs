@@ -1,0 +1,56 @@
+﻿using System.Text.Json;
+using Uestc.BBS.Sdk.Helpers;
+using Uestc.BBS.Sdk.Services.Auth;
+
+namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
+{
+    public class MobcentThreadListService(HttpClient httpClient, AuthCredential credential)
+        : IThreadListService
+    {
+        public async Task<IEnumerable<ThreadOverview>> GetThreadListAsync(
+            string? route = null,
+            uint page = 1,
+            uint pageSize = 10,
+            Board boardId = 0,
+            uint moduleId = 2,
+            uint typeId = 0,
+            TopicSortType sortby = TopicSortType.New,
+            TopicTopOrder topOrder = TopicTopOrder.WithoutTop,
+            bool getPreviewSources = false,
+            bool getPartialReply = false,
+            CancellationToken cancellationToken = default
+        )
+        {
+            using var resp = await httpClient
+                .PostAsync(
+                    ApiEndpoints.GET_MOBILE_HOME_THREAD_LIST_URL,
+                    new FormUrlEncodedContent(
+                        new Dictionary<string, string>
+                        {
+                            { "r", string.IsNullOrEmpty(route) ? "forum/topiclist" : route },
+                            { "accessToken", credential.Token },
+                            { "accessSecret", credential.Secret },
+                            { nameof(page), page.ToString() },
+                            { nameof(pageSize), pageSize.ToString() },
+                            { nameof(boardId), boardId.ToInt32String() },
+                            { "filterType", typeId.ToString() },
+                            { nameof(moduleId), moduleId.ToString() },
+                            { nameof(sortby), sortby.ToLowerString() },
+                            { nameof(topOrder), topOrder.ToInt32String() },
+                            { "circle", getPartialReply ? "1" : "0" },
+                            { "isImageList", getPreviewSources ? "1" : "0" },
+                        }
+                    ),
+                    cancellationToken
+                )
+                .ContinueWith(t => t.Result.EnsureSuccessStatusCode());
+
+            return JsonSerializer
+                    .Deserialize(
+                        await resp.Content.ReadAsStreamAsync(cancellationToken),
+                        MobcentThreadListRespContext.Default.MobcentThreadListResp
+                    )
+                    ?.Threads.Select(t => t.ToThreadOverview()) ?? [];
+        }
+    }
+}

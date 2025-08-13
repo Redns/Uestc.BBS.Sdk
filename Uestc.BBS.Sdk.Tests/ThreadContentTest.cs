@@ -1,12 +1,11 @@
-using Microsoft.Extensions.Configuration;
+Ôªøusing Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Uestc.BBS.Sdk.Services.Auth;
 using Uestc.BBS.Sdk.Services.Thread;
-using Uestc.BBS.Sdk.Services.Thread.ThreadList;
 
 namespace Uestc.BBS.Sdk.Tests
 {
-    public class ThreadListServiceTest
+    public class ThreadContentTest
     {
         private readonly IServiceProvider _services;
 
@@ -14,25 +13,25 @@ namespace Uestc.BBS.Sdk.Tests
 
         private const string BASRE_URL = "https://bbs.uestcer.org";
 
-        public ThreadListServiceTest()
+        public ThreadContentTest()
         {
             var collection = new ServiceCollection();
             collection
                 .AddSingleton(
-                    // NOTE –Ë“™‘⁄ appsettings.json ªÚ”√ªßª˙√‹÷–…Ë÷√ Username ∫Õ Password
+                    // NOTE ÈúÄË¶ÅÂú® appsettings.json ÊàñÁî®Êà∑Êú∫ÂØÜ‰∏≠ËÆæÁΩÆ Username Âíå Password
                     new ConfigurationBuilder()
                         .AddJsonFile("appsettings.json", true, true)
                         .AddUserSecrets<AuthServiceTest>()
                         .Build()
                 )
                 .AddSingleton(_authCredential)
-                .AddWebThreadListService(services => new Uri(BASRE_URL));
+                .AddMobcentThreadContentService(services => new Uri(BASRE_URL));
 
             _services = collection.BuildServiceProvider();
         }
 
         [Fact]
-        public async Task GetThreadListAsyncTest()
+        public async Task GetThreadContentAsyncTest()
         {
             var config = _services.GetRequiredService<IConfigurationRoot>();
 
@@ -40,19 +39,15 @@ namespace Uestc.BBS.Sdk.Tests
                 config["Username"] ?? throw new ArgumentException("Username is not set");
             _authCredential.Password =
                 config["Password"] ?? throw new ArgumentException("Password is not set");
-            _authCredential.Cookie =
-                config["Cookie"] ?? throw new ArgumentException("Cookie is not set");
-            _authCredential.Authorization =
-                config["Authorization"] ?? throw new ArgumentException("Authorization is not set");
+            _authCredential.Token =
+                config["Token"] ?? throw new ArgumentException("Token is not set");
+            _authCredential.Secret =
+                config["Secret"] ?? throw new ArgumentException("Secret is not set");
 
-            var threadListService = _services.GetRequiredService<IThreadListService>();
+            var threadContentService = _services.GetRequiredService<IThreadContentService>();
+            var content = await threadContentService.GetThreadContentAsync(threadId: 1821753);
 
-            var threads = await threadListService.GetThreadListAsync(
-                boardId: Board.EmploymentAndEntrepreneurship,
-                sortby: TopicSortType.Essence
-            );
-
-            Assert.NotEmpty(threads);
+            Assert.NotEmpty(content.Contents);
         }
     }
 }

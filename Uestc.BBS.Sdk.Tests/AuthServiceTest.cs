@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Uestc.BBS.Sdk.Services.Auth;
@@ -21,7 +22,7 @@ namespace Uestc.BBS.Sdk.Tests
                         .AddUserSecrets<AuthServiceTest>()
                         .Build()
                 )
-                .AddAuthService(BASRE_URL);
+                .AddAuthService(services => new Uri(BASRE_URL));
 
             _services = collection.BuildServiceProvider();
         }
@@ -37,7 +38,9 @@ namespace Uestc.BBS.Sdk.Tests
                 Password = config["Password"] ?? throw new ArgumentException("Password is not set"),
             };
 
-            await authService.LoginAsync(credential);
+            await authService
+                .LoginAsync(credential)
+                .ContinueWith(t => Debug.WriteLine(t.IsFaulted));
 
             Assert.NotEmpty(credential.Cookie);
             Assert.NotEmpty(credential.Authorization);
