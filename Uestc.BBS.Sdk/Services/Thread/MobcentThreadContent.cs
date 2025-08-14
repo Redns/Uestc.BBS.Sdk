@@ -112,16 +112,15 @@ namespace Uestc.BBS.Sdk.Services.Thread
         public string UserAvatar { get; set; } = string.Empty;
 
         /// <summary>
-        /// 用户等级
+        /// XXX 注意此字段并非用户等级
         /// </summary>
-        [JsonPropertyName("level")]
-        public uint UserLevel { get; set; }
+        public uint Level { get; set; }
 
         /// <summary>
-        /// 用户组
+        /// 用户头衔（如：Lv.11 鲨鱼）
         /// </summary>
         [JsonPropertyName("userTitle")]
-        public string UserGroup { get; set; } = string.Empty;
+        public string UserTitle { get; set; } = string.Empty;
 
         /// <summary>
         /// 内容
@@ -138,8 +137,8 @@ namespace Uestc.BBS.Sdk.Services.Thread
                 Uid = Uid,
                 Username = Username,
                 UserAvatar = UserAvatar,
-                UserLevel = UserLevel,
-                UserGroup = UserGroup.GetUserTitleAlias(),
+                UserLevel = UserTitle.GetUserTitleLevel(),
+                UserGroup = UserTitle.GetUserTitleAlias(),
                 UserSignature = string.Empty,
                 Contents = Contents,
             };

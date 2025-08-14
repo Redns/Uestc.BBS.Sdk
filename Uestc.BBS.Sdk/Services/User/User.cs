@@ -57,6 +57,11 @@ namespace Uestc.BBS.Sdk.Services.User
     {
         public static uint GetUserTitleLevel(this string userTitle)
         {
+            if (!userTitle.Contains('('))
+            {
+                return 0;
+            }
+
             if (uint.TryParse(userTitle.Split('.').Last()[0..^1], out var level))
             {
                 return level;
@@ -65,8 +70,15 @@ namespace Uestc.BBS.Sdk.Services.User
             throw new ArgumentException("Unable to parse level from user title", nameof(userTitle));
         }
 
-        public static string GetUserTitleAlias(this string userTitle) =>
-            userTitle.Split('(').First().Trim();
+        public static string GetUserTitleAlias(this string userTitle)
+        {
+            if (!userTitle.Contains('('))
+            {
+                return userTitle;
+            }
+
+            return userTitle.Split('(').First().Trim();
+        }
     }
 
     public enum Gender

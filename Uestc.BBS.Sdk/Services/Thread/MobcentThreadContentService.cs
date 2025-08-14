@@ -27,7 +27,7 @@ namespace Uestc.BBS.Sdk.Services.Thread
                     cancellationToken
                 )
                 .ContinueWith(t => t.Result.EnsureSuccessStatusCode());
-            var s = await resp.Content.ReadAsStringAsync(cancellationToken);
+
             return JsonSerializer
                     .Deserialize(
                         await resp.Content.ReadAsStreamAsync(cancellationToken),
