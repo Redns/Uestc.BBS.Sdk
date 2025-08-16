@@ -31,16 +31,19 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
                     ["forum_details"] = "0",
                 }.ToQueryString(),
             };
-            using var resp = await httpClient
-                .GetAsync(uriBuilder.Uri, cancellationToken)
-                .ContinueWith(t => t.Result.EnsureSuccessStatusCode());
+            using var resp = await httpClient.GetAsync(uriBuilder.Uri, cancellationToken);
+            resp.EnsureSuccessStatusCode();
 
-            return JsonSerializer
-                    .Deserialize(
-                        await resp.Content.ReadAsStreamAsync(cancellationToken),
-                        WebThreadListRespContext.Default.WebThreadListResp
-                    )
-                    ?.Data?.Threads.Select(t => t.ToThreadOverview(httpClient.BaseAddress!)) ?? [];
+            using var respStream = await resp.Content.ReadAsStreamAsync(cancellationToken);
+            var threadList = await JsonSerializer.DeserializeAsync(
+                respStream,
+                WebThreadListRespContext.Default.WebThreadListResp,
+                cancellationToken
+            );
+
+            return threadList?.Data?.Threads.Select(t =>
+                    t.ToThreadOverview(httpClient.BaseAddress!)
+                ) ?? [];
         }
     }
 }

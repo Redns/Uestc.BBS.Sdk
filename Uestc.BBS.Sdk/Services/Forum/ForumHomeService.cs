@@ -18,13 +18,14 @@ namespace Uestc.BBS.Sdk.Services.Forum
             CancellationToken cancellationToken
         )
         {
-            using var resp = await client
-                .GetAsync(ApiEndpoints.FORUM_HOME_URL, cancellationToken)
-                .ContinueWith(t => t.Result.EnsureSuccessStatusCode(), cancellationToken);
+            using var respStream =
+                await client.GetStreamAsync(ApiEndpoints.FORUM_HOME_URL, cancellationToken)
+                ?? throw new NullReferenceException("Forum home data is null.");
 
-            return JsonSerializer.Deserialize(
-                    await resp.Content.ReadAsStreamAsync(cancellationToken),
-                    ForumHomeDataContext.Default.ApiRespBaseForumHomeData
+            return await JsonSerializer.DeserializeAsync(
+                    respStream,
+                    ForumHomeDataContext.Default.ApiRespBaseForumHomeData,
+                    cancellationToken
                 ) ?? throw new NullReferenceException("Forum home data is null.");
         }
     }

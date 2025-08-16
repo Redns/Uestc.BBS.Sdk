@@ -21,36 +21,37 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
             CancellationToken cancellationToken = default
         )
         {
-            using var resp = await httpClient
-                .PostAsync(
-                    ApiEndpoints.GET_MOBILE_HOME_THREAD_LIST_URL,
-                    new FormUrlEncodedContent(
-                        new Dictionary<string, string>
-                        {
-                            { "r", string.IsNullOrEmpty(route) ? "forum/topiclist" : route },
-                            { "accessToken", credential.Token },
-                            { "accessSecret", credential.Secret },
-                            { nameof(page), page.ToString() },
-                            { nameof(pageSize), pageSize.ToString() },
-                            { nameof(boardId), boardId.ToInt32String() },
-                            { "filterType", typeId.ToString() },
-                            { nameof(moduleId), moduleId.ToString() },
-                            { nameof(sortby), sortby.ToLowerString() },
-                            { nameof(topOrder), topOrder.ToInt32String() },
-                            { "circle", getPartialReply ? "1" : "0" },
-                            { "isImageList", getPreviewSources ? "1" : "0" },
-                        }
-                    ),
-                    cancellationToken
-                )
-                .ContinueWith(t => t.Result.EnsureSuccessStatusCode());
+            using var resp = await httpClient.PostAsync(
+                ApiEndpoints.GET_MOBILE_HOME_THREAD_LIST_URL,
+                new FormUrlEncodedContent(
+                    new Dictionary<string, string>
+                    {
+                        { "r", string.IsNullOrEmpty(route) ? "forum/topiclist" : route },
+                        { "accessToken", credential.Token },
+                        { "accessSecret", credential.Secret },
+                        { nameof(page), page.ToString() },
+                        { nameof(pageSize), pageSize.ToString() },
+                        { nameof(boardId), boardId.ToInt32String() },
+                        { "filterType", typeId.ToString() },
+                        { nameof(moduleId), moduleId.ToString() },
+                        { nameof(sortby), sortby.ToLowerString() },
+                        { nameof(topOrder), topOrder.ToInt32String() },
+                        { "circle", getPartialReply ? "1" : "0" },
+                        { "isImageList", getPreviewSources ? "1" : "0" },
+                    }
+                ),
+                cancellationToken
+            );
+            resp.EnsureSuccessStatusCode();
 
-            return JsonSerializer
-                    .Deserialize(
-                        await resp.Content.ReadAsStreamAsync(cancellationToken),
-                        MobcentThreadListRespContext.Default.MobcentThreadListResp
-                    )
-                    ?.Threads.Select(t => t.ToThreadOverview()) ?? [];
+            using var respStream = await resp.Content.ReadAsStreamAsync(cancellationToken);
+            var threadList = await JsonSerializer.DeserializeAsync(
+                respStream,
+                MobcentThreadListRespContext.Default.MobcentThreadListResp,
+                cancellationToken
+            );
+
+            return threadList?.Threads.Select(t => t.ToThreadOverview()) ?? [];
         }
     }
 }

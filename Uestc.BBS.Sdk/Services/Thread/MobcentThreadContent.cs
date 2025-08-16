@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using Uestc.BBS.Sdk.JsonConverters;
-using Uestc.BBS.Sdk.Services.User;
 
 namespace Uestc.BBS.Sdk.Services.Thread
 {
@@ -128,19 +127,10 @@ namespace Uestc.BBS.Sdk.Services.Thread
         [JsonPropertyName("content")]
         public RichTextContent[] Contents { get; set; } = [];
 
-        public ThreadContent ToThreadContent() =>
-            new()
-            {
-                Id = Id,
-                Title = Title,
-                CreateTime = CreateTime,
-                Uid = Uid,
-                Username = Username,
-                UserAvatar = UserAvatar,
-                UserLevel = UserTitle.GetUserTitleLevel(),
-                UserGroup = UserTitle.GetUserTitleAlias(),
-                UserSignature = string.Empty,
-                Contents = Contents,
-            };
+        /// <summary>
+        /// Web 链接
+        /// </summary>
+        [JsonPropertyName("forumTopicUrl")]
+        public string WebUrl { get; set; } = string.Empty;
     }
 }

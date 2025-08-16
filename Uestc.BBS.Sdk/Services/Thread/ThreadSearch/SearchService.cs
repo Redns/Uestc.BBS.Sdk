@@ -16,15 +16,18 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadSearch
                 throw new ArgumentException("Invalid page index or page size");
             }
 
-            using var resp = await client
-                .GetAsync($"?q={keyword}&page={page}", cancellationToken)
-                .ContinueWith(t => t.Result.EnsureSuccessStatusCode(), cancellationToken);
-            return JsonSerializer
-                    .Deserialize(
-                        await resp.Content.ReadAsStreamAsync(cancellationToken),
-                        ThreadSearchResultContext.Default.ApiRespBaseThreadSearchResult
-                    )
-                    ?.Data ?? throw new Exception("Failed to deserialize search result");
+            using var respStream =
+                await client.GetStreamAsync($"?q={keyword}&page={page}", cancellationToken)
+                ?? throw new Exception("Failed to deserialize search result");
+
+            var threadSearchResult = await JsonSerializer.DeserializeAsync(
+                respStream,
+                ThreadSearchResultContext.Default.ApiRespBaseThreadSearchResult,
+                cancellationToken
+            );
+
+            return threadSearchResult?.Data
+                ?? throw new Exception("Failed to deserialize search result");
         }
     }
 }

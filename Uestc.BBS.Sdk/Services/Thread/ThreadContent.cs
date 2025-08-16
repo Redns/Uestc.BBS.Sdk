@@ -8,14 +8,34 @@
         public uint Id { get; set; }
 
         /// <summary>
-        /// 标题
+        /// 版块
         /// </summary>
-        public string Title { get; set; } = string.Empty;
+        public Board Board { get; set; }
 
         /// <summary>
         /// 最新回复时间
         /// </summary>
         public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// 点赞量
+        /// </summary>
+        public uint LikeCount { get; set; }
+
+        /// <summary>
+        /// 点踩量
+        /// </summary>
+        public uint DislikeCount { get; set; }
+
+        /// <summary>
+        /// 收藏量
+        /// </summary>
+        public uint FavoriteCount { get; set; }
+
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title { get; set; } = string.Empty;
 
         /// <summary>
         /// Uid

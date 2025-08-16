@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Uestc.BBS.Sdk.JsonConverters;
+using Uestc.BBS.Sdk.Services.User;
 
 namespace Uestc.BBS.Sdk.Services.Thread
 {
@@ -24,10 +25,40 @@ namespace Uestc.BBS.Sdk.Services.Thread
         public uint ReplyCount { get; set; }
 
         /// <summary>
+        /// 版块
+        /// </summary>
+        [JsonPropertyName("boardId")]
+        public Board Board { get; set; }
+
+        /// <summary>
+        /// 版块名称
+        /// </summary>
+        [JsonPropertyName("forumName")]
+        public string BoardName { get; set; } = string.Empty;
+
+        /// <summary>
         /// 帖子内容
         /// </summary>
         [JsonPropertyName("topic")]
         public MobcentThreadContent? Content { get; set; }
+
+        public ThreadContent? ToThreadContent() =>
+            Content is not null
+                ? new()
+                {
+                    Id = Content.Id,
+                    Title = Content.Title,
+                    Board = Board,
+                    CreateTime = Content.CreateTime,
+                    Uid = Content.Uid,
+                    Username = Content.Username,
+                    UserAvatar = Content.UserAvatar,
+                    UserLevel = Content.UserTitle.GetUserTitleLevel(),
+                    UserGroup = Content.UserTitle.GetUserTitleAlias(),
+                    UserSignature = string.Empty,
+                    Contents = Content.Contents,
+                }
+                : null;
     }
 
     [JsonSerializable(typeof(MobcentThreadContentResp))]

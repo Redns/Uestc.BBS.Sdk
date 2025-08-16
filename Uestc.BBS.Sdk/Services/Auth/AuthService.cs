@@ -22,34 +22,30 @@ namespace Uestc.BBS.Sdk.Services.Auth
                 || string.IsNullOrEmpty(credential.Password)
             )
             {
-                throw new ArgumentException("Username or password is null or empty.");
+                throw new ArgumentException("Username/Password is null or empty.");
             }
 
-            await GetCookieAndAuthorizationAsync(
-                    credential.Username,
-                    credential.Password,
-                    cancellationToken
-                )
-                .ContinueWith(
-                    t =>
-                    {
-                        credential.Cookie = t.Result.cookie;
-                        credential.Authorization = t.Result.authorization;
-                    },
-                    CancellationToken.None
-                );
-            await GetMobcentTokenAsync(credential.Username, credential.Password, cancellationToken)
-                .ContinueWith(
-                    t =>
-                    {
-                        credential.Uid = t.Result.Uid;
-                        credential.Token = t.Result.Token;
-                        credential.Secret = t.Result.Secret;
-                        credential.Avatar = t.Result.Avatar;
-                        credential.Level = t.Result.UserTitleLevel;
-                    },
-                    CancellationToken.None
-                );
+            // 获取 Cookie 和 Authorization
+            var (cookie, authorization) = await GetCookieAndAuthorizationAsync(
+                credential.Username,
+                credential.Password,
+                cancellationToken
+            );
+            credential.Cookie = cookie;
+            credential.Authorization = authorization;
+
+            // 获取 Token 和 Secret
+            var mobcentAuthorizationResult = await GetMobcentTokenAsync(
+                credential.Username,
+                credential.Password,
+                cancellationToken
+            );
+
+            credential.Uid = mobcentAuthorizationResult.Uid;
+            credential.Token = mobcentAuthorizationResult.Token;
+            credential.Secret = mobcentAuthorizationResult.Secret;
+            credential.Avatar = mobcentAuthorizationResult.Avatar;
+            credential.Level = mobcentAuthorizationResult.UserTitleLevel;
         }
 
         /// <summary>
@@ -66,42 +62,46 @@ namespace Uestc.BBS.Sdk.Services.Auth
         )
         {
             // 获取 Cookie
-            using var cookieResp = await client
-                .PostAsync(
-                    ApiEndpoints.GET_COOKIE_URL,
-                    new FormUrlEncodedContent(
-                        new Dictionary<string, string>
-                        {
-                            { nameof(username), username },
-                            { nameof(password), password },
-                            { "fastloginfield", "username" },
-                            { "cookietime", "2592000" },
-                            { "questionid", "0" },
-                            { "answer", string.Empty },
-                        }
-                    ),
-                    cancellationToken
-                )
-                .ContinueWith(t => t.Result.EnsureSuccessStatusCode(), cancellationToken);
+            using var cookieResp = await client.PostAsync(
+                ApiEndpoints.GET_COOKIE_URL,
+                new FormUrlEncodedContent(
+                    new Dictionary<string, string>
+                    {
+                        { nameof(username), username },
+                        { nameof(password), password },
+                        { "fastloginfield", "username" },
+                        { "cookietime", "2592000" },
+                        { "questionid", "0" },
+                        { "answer", string.Empty },
+                    }
+                ),
+                cancellationToken
+            );
+            cookieResp.EnsureSuccessStatusCode();
+
             var cookie = string.Join(
                 ";",
                 cookieResp.Headers.GetValues("Set-Cookie").Select(c => c.Split(';').First())
             );
-
-            // 获取 Authorization
             client.DefaultRequestHeaders.Add("Cookie", cookie);
             client.DefaultRequestHeaders.Add("X-UESTC-BBS", "1");
-            using var authResp = await client
-                .PostAsync(ApiEndpoints.GET_AUTHORIZATION_URL, null, cancellationToken)
-                .ContinueWith(t => t.Result.EnsureSuccessStatusCode(), cancellationToken);
 
+            // 获取 Authorization
+            using var authResp = await client.PostAsync(
+                ApiEndpoints.GET_AUTHORIZATION_URL,
+                null,
+                cancellationToken
+            );
+            authResp.EnsureSuccessStatusCode();
+
+            using var authRespStream = await authResp.Content.ReadAsStreamAsync(cancellationToken);
+            var authorizationResult = await JsonSerializer.DeserializeAsync(
+                authRespStream,
+                AuthorizationRespContext.Default.AuthorizationResp,
+                cancellationToken
+            );
             var authorization =
-                JsonSerializer
-                    .Deserialize(
-                        await authResp.Content.ReadAsStreamAsync(cancellationToken),
-                        AuthorizationRespContext.Default.AuthorizationResp
-                    )
-                    ?.Data?.Token
+                authorizationResult?.Data?.Token
                 ?? throw new AuthenticationException(
                     "Authorization failed, token is null or empty."
                 );
@@ -131,22 +131,22 @@ namespace Uestc.BBS.Sdk.Services.Auth
             CancellationToken cancellationToken = default
         )
         {
-            using var resp = await client
-                .PostAsync(
-                    ApiEndpoints.GET_MOBCENT_TOKEN_URL,
-                    new FormUrlEncodedContent(
-                        new Dictionary<string, string>
-                        {
-                            { nameof(username), username },
-                            { nameof(password), password },
-                        }
-                    ),
-                    cancellationToken
-                )
-                .ContinueWith(t => t.Result.EnsureSuccessStatusCode(), cancellationToken);
+            using var resp = await client.PostAsync(
+                ApiEndpoints.GET_MOBCENT_TOKEN_URL,
+                new FormUrlEncodedContent(
+                    new Dictionary<string, string>
+                    {
+                        { nameof(username), username },
+                        { nameof(password), password },
+                    }
+                ),
+                cancellationToken
+            );
+            resp.EnsureSuccessStatusCode();
 
+            using var respStream = await resp.Content.ReadAsStreamAsync(cancellationToken);
             return await JsonSerializer.DeserializeAsync(
-                    await resp.Content.ReadAsStreamAsync(cancellationToken),
+                    respStream,
                     AuthRespContext.Default.MobcentAuthResp,
                     cancellationToken
                 )

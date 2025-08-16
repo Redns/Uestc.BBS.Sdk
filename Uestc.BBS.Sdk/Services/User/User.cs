@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using FastEnumUtility;
 
 namespace Uestc.BBS.Sdk.Services.User
@@ -53,8 +54,18 @@ namespace Uestc.BBS.Sdk.Services.User
         public string IconUrl { get; set; } = string.Empty;
     }
 
-    public static class UserExtension
+    public static partial class UserExtension
     {
+        /// <summary>
+        /// 获取用户等级
+        /// UserTitle 包括如下结构：
+        /// 1.虾米 (Lv.2)
+        /// 2.实习版主
+        /// 3.水藻河泥 (Lv.0 禁言中…)
+        /// </summary>
+        /// <param name="userTitle"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public static uint GetUserTitleLevel(this string userTitle)
         {
             if (!userTitle.Contains('('))
@@ -62,12 +73,13 @@ namespace Uestc.BBS.Sdk.Services.User
                 return 0;
             }
 
-            if (uint.TryParse(userTitle.Split('.').Last()[0..^1], out var level))
+            var match = UserLevelRegex().Match(userTitle);
+            if (match.Success && uint.TryParse(match.Groups[1].Value, out uint level))
             {
                 return level;
             }
 
-            throw new ArgumentException("Unable to parse level from user title", nameof(userTitle));
+            return 0;
         }
 
         public static string GetUserTitleAlias(this string userTitle)
@@ -79,6 +91,9 @@ namespace Uestc.BBS.Sdk.Services.User
 
             return userTitle.Split('(').First().Trim();
         }
+
+        [GeneratedRegex(@"Lv\.(\d+)")]
+        private static partial Regex UserLevelRegex();
     }
 
     public enum Gender

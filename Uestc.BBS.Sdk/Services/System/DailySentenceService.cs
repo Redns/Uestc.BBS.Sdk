@@ -10,9 +10,14 @@ namespace Uestc.BBS.Sdk.Services.System
         /// 获取每日一句
         /// </summary>
         /// <returns></returns>
-        public async Task<string> GetDailySentenceAsync()
+        public async Task<string> GetDailySentenceAsync(
+            CancellationToken cancellationToken = default
+        )
         {
-            var content = await _httpClient.GetStringAsync(ApiEndpoints.GET_DAILY_SENTENCE_URL);
+            var content = await _httpClient.GetStringAsync(
+                ApiEndpoints.GET_DAILY_SENTENCE_URL,
+                cancellationToken
+            );
             if (string.IsNullOrEmpty(content))
             {
                 return string.Empty;

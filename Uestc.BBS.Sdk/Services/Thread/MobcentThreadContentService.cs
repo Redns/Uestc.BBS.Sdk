@@ -11,29 +11,30 @@ namespace Uestc.BBS.Sdk.Services.Thread
             CancellationToken cancellationToken = default
         )
         {
-            using var resp = await httpClient
-                .PostAsync(
-                    ApiEndpoints.GET_MOBILE_THREAD_CONTENT_URL,
-                    new FormUrlEncodedContent(
-                        new Dictionary<string, string>
-                        {
-                            { "accessToken", credential.Token },
-                            { "accessSecret", credential.Secret },
-                            { "r", "forum/postlist" },
-                            { "topicId", threadId.ToString() },
-                            { "pageSize", "0" },
-                        }
-                    ),
-                    cancellationToken
-                )
-                .ContinueWith(t => t.Result.EnsureSuccessStatusCode());
+            using var resp = await httpClient.PostAsync(
+                ApiEndpoints.GET_MOBILE_THREAD_CONTENT_URL,
+                new FormUrlEncodedContent(
+                    new Dictionary<string, string>
+                    {
+                        { "accessToken", credential.Token },
+                        { "accessSecret", credential.Secret },
+                        { "r", "forum/postlist" },
+                        { "topicId", threadId.ToString() },
+                        { "pageSize", "0" },
+                    }
+                ),
+                cancellationToken
+            );
+            resp.EnsureSuccessStatusCode();
 
-            return JsonSerializer
-                    .Deserialize(
-                        await resp.Content.ReadAsStreamAsync(cancellationToken),
-                        MobcentThreadContentRespContext.Default.MobcentThreadContentResp
-                    )
-                    ?.Content?.ToThreadContent() ?? throw new NullReferenceException();
+            using var respStream = await resp.Content.ReadAsStreamAsync(cancellationToken);
+            var threadContent = await JsonSerializer.DeserializeAsync(
+                respStream,
+                MobcentThreadContentRespContext.Default.MobcentThreadContentResp,
+                cancellationToken
+            );
+
+            return threadContent?.ToThreadContent() ?? throw new NullReferenceException();
         }
     }
 }

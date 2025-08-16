@@ -2,6 +2,6 @@
 {
     public interface IDailySentenceService
     {
-        Task<string> GetDailySentenceAsync();
+        Task<string> GetDailySentenceAsync(CancellationToken cancellationToken = default);
     }
 }
