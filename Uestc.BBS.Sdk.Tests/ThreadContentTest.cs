@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Uestc.BBS.Sdk.Services.Auth;
-using Uestc.BBS.Sdk.Services.Thread;
 
 namespace Uestc.BBS.Sdk.Tests
 {

@@ -3,6 +3,7 @@ using Uestc.BBS.Sdk.Services.Auth;
 using Uestc.BBS.Sdk.Services.Forum;
 using Uestc.BBS.Sdk.Services.System;
 using Uestc.BBS.Sdk.Services.Thread;
+using Uestc.BBS.Sdk.Services.Thread.ThreadContent;
 using Uestc.BBS.Sdk.Services.Thread.ThreadList;
 using Uestc.BBS.Sdk.Services.Thread.ThreadSearch;
 

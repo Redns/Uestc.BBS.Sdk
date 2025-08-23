@@ -152,7 +152,7 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
         /// <summary>
         /// 用户等级
         /// </summary>
-        public uint UserLevel => UserTitle.GetUserTitleLevel();
+        public uint UserLevel => UserTitle.GetUserLevel();
 
         /// <summary>
         /// 点赞数

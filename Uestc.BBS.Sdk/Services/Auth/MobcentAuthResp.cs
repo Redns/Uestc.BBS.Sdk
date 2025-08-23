@@ -49,13 +49,13 @@ namespace Uestc.BBS.Sdk.Services.Auth
         /// 用户等级
         /// </summary>
         [JsonIgnore]
-        public uint UserTitleLevel => UserTitle.GetUserTitleLevel();
+        public uint UserTitleLevel => UserTitle.GetUserLevel();
 
         /// <summary>
         /// 用户等级别名（如：鲤鱼）
         /// </summary>
         [JsonIgnore]
-        public string UserTitleAlias => UserTitle.GetUserTitleAlias();
+        public string UserTitleAlias => UserTitle.GetUserGroup();
         #endregion
 
         public Credit[] CreditShowList { get; set; } = [];

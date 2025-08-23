@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Uestc.BBS.Sdk.JsonConverters;
+using Uestc.BBS.Sdk.Services.Thread.ThreadContent;
 using Uestc.BBS.Sdk.Services.User;
 
 namespace Uestc.BBS.Sdk.Services.Thread
@@ -42,23 +43,33 @@ namespace Uestc.BBS.Sdk.Services.Thread
         [JsonPropertyName("topic")]
         public MobcentThreadContent? Content { get; set; }
 
-        public ThreadContent? ToThreadContent() =>
+        /// <summary>
+        /// 回复列表
+        /// </summary>
+        [JsonPropertyName("list")]
+        public MobcentThreadReply[] Replies { get; set; } = [];
+
+        public ThreadContent.ThreadContent ToThreadContent() =>
             Content is not null
                 ? new()
                 {
                     Id = Content.Id,
-                    Title = Content.Title,
                     Board = Board,
+                    Title = Content.Title,
+                    LikeCount = 0,
+                    DislikeCount = 0,
+                    FavoriteCount = 0,
                     CreateTime = Content.CreateTime,
                     Uid = Content.Uid,
                     Username = Content.Username,
                     UserAvatar = Content.UserAvatar,
-                    UserLevel = Content.UserTitle.GetUserTitleLevel(),
-                    UserGroup = Content.UserTitle.GetUserTitleAlias(),
+                    UserLevel = Content.UserTitle.GetUserLevel(),
+                    UserGroup = Content.UserTitle.GetUserGroup(),
                     UserSignature = string.Empty,
                     Contents = Content.Contents,
+                    Replies = [.. Replies.Select(r => r.ToThreadReply(Content.Uid))],
                 }
-                : null;
+                : throw new NullReferenceException("Content is null");
     }
 
     [JsonSerializable(typeof(MobcentThreadContentResp))]

@@ -1,13 +1,17 @@
 ﻿using System.Text.Json;
 using Uestc.BBS.Sdk.Services.Auth;
 
-namespace Uestc.BBS.Sdk.Services.Thread
+namespace Uestc.BBS.Sdk.Services.Thread.ThreadContent
 {
     public class MobcentThreadContentService(HttpClient httpClient, AuthCredential credential)
         : IThreadContentService
     {
         public async Task<ThreadContent> GetThreadContentAsync(
             uint threadId,
+            uint authorId = 0,
+            uint page = 0,
+            uint pageSize = 30,
+            bool reverseOrder = false,
             CancellationToken cancellationToken = default
         )
         {
@@ -20,7 +24,10 @@ namespace Uestc.BBS.Sdk.Services.Thread
                         { "accessSecret", credential.Secret },
                         { "r", "forum/postlist" },
                         { "topicId", threadId.ToString() },
-                        { "pageSize", "0" },
+                        { "authorId", authorId.ToString() },
+                        { "page", page.ToString() },
+                        { "pageSize", pageSize.ToString() },
+                        { "order", reverseOrder ? "1" : "0" },
                     }
                 ),
                 cancellationToken

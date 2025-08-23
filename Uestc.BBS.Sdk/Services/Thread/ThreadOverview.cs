@@ -76,6 +76,11 @@ namespace Uestc.BBS.Sdk.Services.Thread
         public uint Uid { get; set; }
 
         /// <summary>
+        /// 是否匿名
+        /// </summary>
+        public bool IsAnonymous => Uid == 0;
+
+        /// <summary>
         /// 用户名
         /// </summary>
         public string Username { get; set; } = string.Empty;

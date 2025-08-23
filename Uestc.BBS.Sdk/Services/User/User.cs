@@ -66,7 +66,7 @@ namespace Uestc.BBS.Sdk.Services.User
         /// <param name="userTitle"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public static uint GetUserTitleLevel(this string userTitle)
+        public static uint GetUserLevel(this string userTitle)
         {
             if (!userTitle.Contains('('))
             {
@@ -82,11 +82,25 @@ namespace Uestc.BBS.Sdk.Services.User
             return 0;
         }
 
-        public static string GetUserTitleAlias(this string userTitle)
+        /// <summary>
+        /// 获取用户组别
+        /// /// UserTitle 包括如下结构：
+        /// 1.虾米 (Lv.2)
+        /// 2.实习版主
+        /// 3.水藻河泥 (Lv.0 禁言中…)
+        /// </summary>
+        /// <param name="userTitle"></param>
+        /// <returns></returns>
+        public static string GetUserGroup(this string userTitle)
         {
             if (!userTitle.Contains('('))
             {
                 return userTitle;
+            }
+
+            if (userTitle.Contains("禁言中"))
+            {
+                return "禁言中";
             }
 
             return userTitle.Split('(').First().Trim();

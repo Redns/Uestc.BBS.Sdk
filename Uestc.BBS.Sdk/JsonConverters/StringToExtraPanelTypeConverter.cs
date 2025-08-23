@@ -5,9 +5,9 @@ using Uestc.BBS.Sdk.Services.Thread.ThreadContent;
 
 namespace Uestc.BBS.Sdk.JsonConverters
 {
-    public class StringToReplyTypeConverter : JsonConverter<ReplyType>
+    public class StringToExtraPanelTypeConverter : JsonConverter<ExtraPanelType>
     {
-        public override ReplyType Read(
+        public override ExtraPanelType Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -18,12 +18,12 @@ namespace Uestc.BBS.Sdk.JsonConverters
                 throw new JsonException("Expected a number value for boolean");
             }
 
-            return FastEnum.Parse<ReplyType>(reader.GetString(), true);
+            return FastEnum.Parse<ExtraPanelType>(reader.GetString(), true);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            ReplyType value,
+            ExtraPanelType value,
             JsonSerializerOptions options
         )
         {

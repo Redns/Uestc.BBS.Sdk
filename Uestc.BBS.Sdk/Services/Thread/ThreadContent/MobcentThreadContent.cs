@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Uestc.BBS.Sdk.JsonConverters;
 
-namespace Uestc.BBS.Sdk.Services.Thread
+namespace Uestc.BBS.Sdk.Services.Thread.ThreadContent
 {
     public class MobcentThreadContent
     {
@@ -132,5 +132,11 @@ namespace Uestc.BBS.Sdk.Services.Thread
         /// </summary>
         [JsonPropertyName("forumTopicUrl")]
         public string WebUrl { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 附加面板
+        /// </summary>
+        [JsonPropertyName("extraPanel")]
+        public ExtraPanel[] Operations { get; set; } = [];
     }
 }
