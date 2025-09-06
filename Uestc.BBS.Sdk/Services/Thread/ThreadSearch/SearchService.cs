@@ -2,7 +2,11 @@
 
 namespace Uestc.BBS.Sdk.Services.Thread.ThreadSearch
 {
-    public class SearchService(HttpClient client) : ISearchService
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="httpClientFactory">请使用 <see cref="ServiceExtensions.UseWebServices"/> 注入</param>
+    public class SearchService(IHttpClientFactory httpClientFactory) : ISearchService
     {
         public async Task<ThreadSearchResult> SearchThreadsAsync(
             string keyword,
@@ -16,8 +20,9 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadSearch
                 throw new ArgumentException("Invalid page index or page size");
             }
 
+            var httpClient = httpClientFactory.CreateClient(ServiceExtensions.WEB_API);
             using var respStream =
-                await client.GetStreamAsync($"?q={keyword}&page={page}", cancellationToken)
+                await httpClient.GetStreamAsync($"?q={keyword}&page={page}", cancellationToken)
                 ?? throw new Exception("Failed to deserialize search result");
 
             var threadSearchResult = await JsonSerializer.DeserializeAsync(

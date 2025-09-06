@@ -1,9 +1,12 @@
 ﻿using System.Text.Json;
-using Uestc.BBS.Sdk.Services.Auth;
 
 namespace Uestc.BBS.Sdk.Services.Thread.ThreadContent
 {
-    public class MobcentThreadContentService(HttpClient httpClient, AuthCredential credential)
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="httpClientFactory">请使用 <see cref="ServiceExtensions.UseMobcentServices"/> 注入</param>
+    public class MobcentThreadContentService(IHttpClientFactory httpClientFactory)
         : IThreadContentService
     {
         public async Task<ThreadContent> GetThreadContentAsync(
@@ -15,13 +18,13 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadContent
             CancellationToken cancellationToken = default
         )
         {
+            var httpClient = httpClientFactory.CreateClient(ServiceExtensions.MOBCENT_API);
+
             using var resp = await httpClient.PostAsync(
                 ApiEndpoints.GET_MOBILE_THREAD_CONTENT_URL,
                 new FormUrlEncodedContent(
                     new Dictionary<string, string>
                     {
-                        { "accessToken", credential.Token },
-                        { "accessSecret", credential.Secret },
                         { "r", "forum/postlist" },
                         { "topicId", threadId.ToString() },
                         { "authorId", authorId.ToString() },
@@ -41,7 +44,13 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadContent
                 cancellationToken
             );
 
-            return threadContent?.ToThreadContent() ?? throw new NullReferenceException();
+            if (threadContent?.Head.ErrorCode is MobcentApiErrorCode.Unauthenticated)
+            {
+                throw new UnauthorizedAccessException("Invalid access token/secret");
+            }
+
+            return threadContent?.ToThreadContent()
+                ?? throw new NullReferenceException("Thread content is null");
         }
     }
 }

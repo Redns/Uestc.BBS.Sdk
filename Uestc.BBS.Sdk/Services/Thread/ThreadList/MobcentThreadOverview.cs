@@ -37,7 +37,7 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
         /// 帖子类型
         /// </summary>
         [JsonConverter(typeof(StringToTopicTypeConverter))]
-        public TopicType Type { get; set; } = TopicType.Normal;
+        public ThreadType Type { get; set; } = ThreadType.Normal;
 
         /// <summary>
         /// 帖子标题

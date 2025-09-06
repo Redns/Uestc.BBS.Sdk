@@ -33,6 +33,11 @@
         public required RichTextContent[] Contents { get; set; } = [];
 
         /// <summary>
+        /// 是否置顶
+        /// </summary>
+        public required bool IsPinned { get; set; }
+
+        /// <summary>
         /// 是否是楼主
         /// </summary>
         public required bool IsFromThreadMaster { get; set; }
@@ -76,6 +81,11 @@
         /// 引用的主题用户名
         /// </summary>
         public string QuoteUsername { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 引用的主题用户头像
+        /// </summary>
+        public string QuoteUserAvatar { get; set; } = string.Empty;
 
         /// <summary>
         /// 引用的主题内容

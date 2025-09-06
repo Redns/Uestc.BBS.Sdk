@@ -239,7 +239,7 @@ namespace Uestc.BBS.Sdk.Services.Thread
     /// <summary>
     /// 帖子类型
     /// </summary>
-    public enum TopicType
+    public enum ThreadType
     {
         [Label("普通")]
         Normal = 0,
@@ -249,6 +249,17 @@ namespace Uestc.BBS.Sdk.Services.Thread
 
         [Label("投票")]
         Vote,
+    }
+
+    /// <summary>
+    /// 主题渲染格式
+    /// </summary>
+    public enum ThreadRenderFormat
+    {
+        Unknown = -1, // TODO 未知
+        Defalut = 0, // TODO 默认
+        Unknown2, // TODO 未知
+        Markdown, // Markdown
     }
 
     [JsonSerializable(typeof(ThreadOverview))]

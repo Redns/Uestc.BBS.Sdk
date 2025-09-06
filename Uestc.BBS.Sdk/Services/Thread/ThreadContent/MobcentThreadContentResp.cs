@@ -49,7 +49,13 @@ namespace Uestc.BBS.Sdk.Services.Thread
         [JsonPropertyName("list")]
         public MobcentThreadReply[] Replies { get; set; } = [];
 
-        public ThreadContent.ThreadContent ToThreadContent() =>
+        /// <summary>
+        /// Web 链接
+        /// </summary>
+        [JsonPropertyName("forumTopicUrl")]
+        public string WebUrl { get; set; } = string.Empty;
+
+        public ThreadContent.ThreadContent? ToThreadContent() =>
             Content is not null
                 ? new()
                 {
@@ -60,6 +66,7 @@ namespace Uestc.BBS.Sdk.Services.Thread
                     DislikeCount = 0,
                     FavoriteCount = 0,
                     CreateTime = Content.CreateTime,
+                    WebUrl = WebUrl,
                     Uid = Content.Uid,
                     Username = Content.Username,
                     UserAvatar = Content.UserAvatar,
@@ -67,9 +74,20 @@ namespace Uestc.BBS.Sdk.Services.Thread
                     UserGroup = Content.UserTitle.GetUserGroup(),
                     UserSignature = string.Empty,
                     Contents = Content.Contents,
-                    Replies = [.. Replies.Select(r => r.ToThreadReply(Content.Uid))],
+                    Replies =
+                    [
+                        .. Replies
+                            .Select(r => r.ToThreadReply(Content.Uid))
+                            .Select(reply =>
+                            {
+                                reply.QuoteUserAvatar =
+                                    Replies.FirstOrDefault(r => r.Id == reply.QuoteId)?.UserAvatar
+                                    ?? string.Empty;
+                                return reply;
+                            }),
+                    ],
                 }
-                : throw new NullReferenceException("Content is null");
+                : null;
     }
 
     [JsonSerializable(typeof(MobcentThreadContentResp))]

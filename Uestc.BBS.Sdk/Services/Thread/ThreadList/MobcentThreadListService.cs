@@ -1,11 +1,13 @@
 ﻿using System.Text.Json;
 using Uestc.BBS.Sdk.Helpers;
-using Uestc.BBS.Sdk.Services.Auth;
 
 namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
 {
-    public class MobcentThreadListService(HttpClient httpClient, AuthCredential credential)
-        : IThreadListService
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="httpClientFactory">请使用 <see cref="ServiceExtensions.UseMobcentServices"/> 注入</param>
+    public class MobcentThreadListService(IHttpClientFactory httpClientFactory) : IThreadListService
     {
         public async Task<IEnumerable<ThreadOverview>> GetThreadListAsync(
             string? route = null,
@@ -24,8 +26,6 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
             var formData = new Dictionary<string, string>
             {
                 { "r", string.IsNullOrEmpty(route) ? "forum/topiclist" : route },
-                { "accessToken", credential.Token },
-                { "accessSecret", credential.Secret },
                 { nameof(page), page.ToString() },
                 { nameof(pageSize), pageSize.ToString() },
                 { nameof(boardId), boardId.ToInt32String() },
@@ -42,6 +42,7 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
                 formData["filterType"] = typeId.ToString();
             }
 
+            var httpClient = httpClientFactory.CreateClient(ServiceExtensions.MOBCENT_API);
             using var resp = await httpClient.PostAsync(
                 ApiEndpoints.GET_MOBILE_HOME_THREAD_LIST_URL,
                 new FormUrlEncodedContent(formData),

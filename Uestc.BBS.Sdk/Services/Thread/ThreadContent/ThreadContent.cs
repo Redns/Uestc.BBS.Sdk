@@ -38,6 +38,11 @@
         public required string Title { get; set; } = string.Empty;
 
         /// <summary>
+        /// 网页端链接
+        /// </summary>
+        public required string WebUrl { get; set; } = string.Empty;
+
+        /// <summary>
         /// Uid
         /// </summary>
         public required uint Uid { get; set; }

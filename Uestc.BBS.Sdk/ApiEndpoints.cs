@@ -54,6 +54,11 @@
         public const string GET_THREAD_LIST_URL = "star/api/v1/thread/list";
 
         /// <summary>
+        /// 发表主题评论
+        /// </summary>
+        public const string POST_THREAD_REPLY_URL = "star/api/v1/thread/reply";
+
+        /// <summary>
         /// 获取首页主题列表（移动端）
         /// </summary>
         public const string GET_MOBILE_HOME_THREAD_LIST_URL = "mobcent/app/web/index.php";

@@ -9,7 +9,7 @@ namespace Uestc.BBS.Sdk.Models
         /// ID
         /// </summary>
         [JsonPropertyName("attachment_id")]
-        public uint Id { get; set; } 
+        public uint Id { get; set; }
 
         /// <summary>
         /// 文件名
@@ -43,7 +43,7 @@ namespace Uestc.BBS.Sdk.Models
         /// 是否为图片
         /// </summary>
         [JsonPropertyName("is_image")]
-        [JsonConverter(typeof(UintToBoolConverter))]
+        [JsonConverter(typeof(IntToBoolConverter))]
         public bool IsImage { get; set; } = false;
 
         /// <summary>
@@ -68,6 +68,11 @@ namespace Uestc.BBS.Sdk.Models
         /// 文件路径（如：/thumb/data/attachment/forum/202508/12/182636ndhlldrqlhh1z1d1.png?variant=original）
         /// </summary>
         public string Path { get; set; } = string.Empty;
+
+        /// <summary>
+        /// TODO WHAT'S THIS?
+        /// </summary>
+        public int Remote { get; set; } = 0;
 
         /// <summary>
         /// 缩略图路径（如：/thumb/data/attachment/forum/202508/12/182636ndhlldrqlhh1z1d1.png）

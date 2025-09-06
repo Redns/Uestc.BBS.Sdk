@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
 	<LangVersion>preview</LangVersion>
 	<IsAotCompatible>true</IsAotCompatible>
+	<UserSecretsId>55ee919e-318f-4ccd-a554-4368f59785b9</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

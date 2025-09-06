@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Uestc.BBS.Sdk.Services.Auth;
+using Uestc.BBS.Sdk.Services.Thread.ThreadContent;
 
 namespace Uestc.BBS.Sdk.Tests
 {
@@ -32,7 +33,7 @@ namespace Uestc.BBS.Sdk.Tests
         [Fact]
         public async Task GetThreadContentAsyncTest()
         {
-            var config = _services.GetRequiredService<IConfigurationRoot>();
+            var config = _services.GetpartialService<IConfigurationRoot>();
 
             _authCredential.Username =
                 config["Username"] ?? throw new ArgumentException("Username is not set");
@@ -43,7 +44,7 @@ namespace Uestc.BBS.Sdk.Tests
             _authCredential.Secret =
                 config["Secret"] ?? throw new ArgumentException("Secret is not set");
 
-            var threadContentService = _services.GetRequiredService<IThreadContentService>();
+            var threadContentService = _services.GetpartialService<IThreadContentService>();
             var content = await threadContentService.GetThreadContentAsync(threadId: 1821753);
 
             Assert.NotEmpty(content.Contents);

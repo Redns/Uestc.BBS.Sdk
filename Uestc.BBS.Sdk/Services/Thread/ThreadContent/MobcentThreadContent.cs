@@ -73,7 +73,7 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadContent
         public int Hot { get; set; }
 
         /// <summary>
-        /// TODO WHAT'S THIS?
+        /// 内容格式（只有 format == '2' 时帖子才是 Markdown 格式）
         /// </summary>
         public string Format { get; set; } = string.Empty;
 
@@ -126,12 +126,6 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadContent
         /// </summary>
         [JsonPropertyName("content")]
         public RichTextContent[] Contents { get; set; } = [];
-
-        /// <summary>
-        /// Web 链接
-        /// </summary>
-        [JsonPropertyName("forumTopicUrl")]
-        public string WebUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// 附加面板

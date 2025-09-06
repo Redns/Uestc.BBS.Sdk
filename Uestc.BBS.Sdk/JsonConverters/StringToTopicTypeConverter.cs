@@ -5,9 +5,9 @@ using Uestc.BBS.Sdk.Services.Thread;
 
 namespace Uestc.BBS.Sdk.JsonConverters
 {
-    public class StringToTopicTypeConverter : JsonConverter<TopicType>
+    public class StringToTopicTypeConverter : JsonConverter<ThreadType>
     {
-        public override TopicType Read(
+        public override ThreadType Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -18,12 +18,12 @@ namespace Uestc.BBS.Sdk.JsonConverters
                 throw new JsonException("Expected a number value for boolean");
             }
 
-            return FastEnum.Parse<TopicType>(reader.GetString(), true);
+            return FastEnum.Parse<ThreadType>(reader.GetString(), true);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            TopicType value,
+            ThreadType value,
             JsonSerializerOptions options
         )
         {

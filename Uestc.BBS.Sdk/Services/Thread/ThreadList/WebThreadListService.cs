@@ -3,7 +3,7 @@ using Uestc.BBS.Sdk.Helpers;
 
 namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
 {
-    public class WebThreadListService(HttpClient httpClient) : IThreadListService
+    public class WebThreadListService(IHttpClientFactory httpClientFactory) : IThreadListService
     {
         public async Task<IEnumerable<ThreadOverview>> GetThreadListAsync(
             string? route = null,
@@ -19,6 +19,8 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
             CancellationToken cancellationToken = default
         )
         {
+            var httpClient = httpClientFactory.CreateClient(ServiceExtensions.WEB_API);
+
             sortby = sortby is TopicSortType.New ? TopicSortType.All : sortby;
             var uriBuilder = new UriBuilder(httpClient.BaseAddress!)
             {

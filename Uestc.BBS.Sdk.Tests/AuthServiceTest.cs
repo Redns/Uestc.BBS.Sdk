@@ -22,7 +22,7 @@ namespace Uestc.BBS.Sdk.Tests
                         .AddUserSecrets<AuthServiceTest>()
                         .Build()
                 )
-                .AddAuthService(services => new Uri(BASRE_URL));
+                .AddWebAuthService(services => new Uri(BASRE_URL));
 
             _services = collection.BuildServiceProvider();
         }
@@ -30,8 +30,8 @@ namespace Uestc.BBS.Sdk.Tests
         [Fact]
         public async Task LoginAsyncTest()
         {
-            var authService = _services.GetRequiredService<IAuthService>();
-            var config = _services.GetRequiredService<IConfigurationRoot>();
+            var authService = _services.GetpartialService<IAuthService>();
+            var config = _services.GetpartialService<IConfigurationRoot>();
             var credential = new AuthCredential
             {
                 Username = config["Username"] ?? throw new ArgumentException("Username is not set"),
@@ -42,7 +42,7 @@ namespace Uestc.BBS.Sdk.Tests
                 .LoginAsync(credential)
                 .ContinueWith(t => Debug.WriteLine(t.IsFaulted));
 
-            Assert.NotEmpty(credential.Cookie);
+            Assert.NotEmpty(credential.Cookies);
             Assert.NotEmpty(credential.Authorization);
             Assert.NotEmpty(credential.Token);
             Assert.NotEmpty(credential.Secret);

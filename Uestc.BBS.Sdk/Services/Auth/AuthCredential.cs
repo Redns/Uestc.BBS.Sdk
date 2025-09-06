@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Net;
+using System.Text.Json.Serialization;
 
 namespace Uestc.BBS.Sdk.Services.Auth
 {
@@ -29,9 +30,36 @@ namespace Uestc.BBS.Sdk.Services.Auth
         /// <summary>
         /// Cookie 和 Autherization 用于网页端接口认证
         /// </summary>
-        public string Cookie { get; set; } = string.Empty;
+        public CookieCollection Cookies
+        {
+            get => CookieContainer.GetAllCookies();
+            set
+            {
+                CookieContainer.GetAllCookies().Clear();
+                CookieContainer.Add(value);
+            }
+        }
+
+        [JsonIgnore]
+        public CookieContainer CookieContainer { get; private set; } = new();
 
         public string Authorization { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 是否已通过移动端认证
+        /// </summary>
+        [JsonIgnore]
+        public bool IsMobcentAuthenticated =>
+            !string.IsNullOrEmpty(Token) && !string.IsNullOrEmpty(Secret);
+
+        /// <summary>
+        /// 是否已通过网页端认证
+        /// </summary>
+        [JsonIgnore]
+        public bool IsCookieAuthenticated =>
+            Cookies.Count > 0
+            && Cookies.Where(c => c.Expires != DateTime.MinValue).All(c => !c.Expired)
+            && !string.IsNullOrEmpty(Authorization);
 
         /// <summary>
         /// 头像

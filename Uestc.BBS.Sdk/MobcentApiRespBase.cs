@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Uestc.BBS.Sdk.JsonConverters;
 
 namespace Uestc.BBS.Sdk
 {
@@ -27,7 +28,8 @@ namespace Uestc.BBS.Sdk
         public int Alert { get; set; } = 0;
 
         [JsonPropertyName("errCode")]
-        public string ErrorCode { get; set; } = string.Empty;
+        [JsonConverter(typeof(String2MobcentApiErrorCode))]
+        public MobcentApiErrorCode ErrorCode { get; set; } = MobcentApiErrorCode.Success;
 
         [JsonPropertyName("errInfo")]
         public string ErrorInformation { get; set; } = string.Empty;
@@ -52,4 +54,11 @@ namespace Uestc.BBS.Sdk
         PropertyNameCaseInsensitive = true
     )]
     public partial class ApiRespBaseContext : JsonSerializerContext { }
+
+    public enum MobcentApiErrorCode
+    {
+        Success = 0,
+        Unauthenticated,
+        Unkown,
+    }
 }

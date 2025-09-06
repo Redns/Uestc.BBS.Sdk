@@ -15,7 +15,7 @@ namespace Uestc.BBS.Sdk.JsonConverters
         ) =>
             reader.TokenType is JsonTokenType.Number
                 ? DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64()).LocalDateTime
-                : throw new JsonException("Expected a String value for DateTime.");
+                : throw new JsonException("Expected an Int value for DateTime.");
 
         public override void Write(
             Utf8JsonWriter writer,
@@ -23,7 +23,8 @@ namespace Uestc.BBS.Sdk.JsonConverters
             JsonSerializerOptions options
         )
         {
-            throw new NotImplementedException();
+            var unixTime = new DateTimeOffset(value.ToUniversalTime()).ToUnixTimeSeconds();
+            writer.WriteNumberValue(unixTime);
         }
     }
 }

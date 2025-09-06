@@ -21,7 +21,7 @@ namespace Uestc.BBS.Sdk.Tests
         [Fact]
         public async Task GetDailySentenceAsyncTest()
         {
-            var dailysentenceService = _services.GetRequiredService<IDailySentenceService>();
+            var dailysentenceService = _services.GetpartialService<IDailySentenceService>();
             var dailysentence = await dailysentenceService.GetDailySentenceAsync();
 
             Assert.NotEmpty(dailysentence);

@@ -186,6 +186,7 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadContent
                         ?.ExtraParam.RecommendAdd ?? 0,
                 DislikeCount = 0,
                 Position = Position,
+                IsPinned = IsPostStick,
                 Contents = Contents,
                 Uid = Uid,
                 Username = Username,

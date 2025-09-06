@@ -2,10 +2,13 @@
 
 namespace Uestc.BBS.Sdk.Services.System
 {
-    public partial class DailySentenceService(HttpClient httpClient) : IDailySentenceService
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="httpClientFactory">请使用 <see cref="ServiceExtensions.UseWebServices"/> 注入</param>
+    public partial class DailySentenceService(IHttpClientFactory httpClientFactory)
+        : IDailySentenceService
     {
-        private readonly HttpClient _httpClient = httpClient;
-
         /// <summary>
         /// 获取每日一句
         /// </summary>
@@ -14,10 +17,12 @@ namespace Uestc.BBS.Sdk.Services.System
             CancellationToken cancellationToken = default
         )
         {
-            var content = await _httpClient.GetStringAsync(
+            var httpClient = httpClientFactory.CreateClient(ServiceExtensions.WEB_API);
+            var content = await httpClient.GetStringAsync(
                 ApiEndpoints.GET_DAILY_SENTENCE_URL,
                 cancellationToken
             );
+
             if (string.IsNullOrEmpty(content))
             {
                 return string.Empty;

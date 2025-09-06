@@ -26,7 +26,8 @@ namespace Uestc.BBS.Sdk.Tests
                         .Build()
                 )
                 .AddSingleton(_authCredential)
-                .AddWebThreadListService(services => new Uri(BASRE_URL));
+                .AddWebAuthService(services => new Uri(BASRE_URL));
+            collection.AddWebThreadListService(services => new Uri(BASRE_URL));
 
             _services = collection.BuildServiceProvider();
         }
@@ -34,18 +35,23 @@ namespace Uestc.BBS.Sdk.Tests
         [Fact]
         public async Task GetThreadListAsyncTest()
         {
-            var config = _services.GetRequiredService<IConfigurationRoot>();
+            var config = _services.GetpartialService<IConfigurationRoot>();
+            var authService = _services.GetpartialService<IAuthService>();
+            var credential = _services.GetpartialService<AuthCredential>();
 
             _authCredential.Username =
                 config["Username"] ?? throw new ArgumentException("Username is not set");
             _authCredential.Password =
                 config["Password"] ?? throw new ArgumentException("Password is not set");
-            _authCredential.Cookie =
-                config["Cookie"] ?? throw new ArgumentException("Cookie is not set");
-            _authCredential.Authorization =
-                config["Authorization"] ?? throw new ArgumentException("Authorization is not set");
 
-            var threadListService = _services.GetRequiredService<IThreadListService>();
+            // 获取 Cookie 和 Authorization
+            await authService.LoginAsync(credential);
+
+            Assert.NotEmpty(credential.Cookies);
+            Assert.NotEmpty(credential.Authorization);
+
+            // 获取帖子列表
+            var threadListService = _services.GetpartialService<IThreadListService>();
 
             var threads = await threadListService.GetThreadListAsync(
                 boardId: Board.EmploymentAndEntrepreneurship,
