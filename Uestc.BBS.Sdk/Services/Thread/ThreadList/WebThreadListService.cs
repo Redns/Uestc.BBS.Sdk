@@ -44,8 +44,14 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
             );
 
             return threadList?.Data?.Threads.Select(t =>
-                    t.ToThreadOverview(httpClient.BaseAddress!)
-                ) ?? [];
+                {
+                    var threadOverview = t.ToThreadOverview(httpClient.BaseAddress!);
+                    if (!getPreviewSources)
+                    {
+                        threadOverview.PreviewImageSources = [];
+                    }
+                    return threadOverview;
+                }) ?? [];
         }
     }
 }

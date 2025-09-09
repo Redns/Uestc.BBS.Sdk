@@ -53,7 +53,6 @@ namespace Uestc.BBS.Sdk.Services.Auth
             credential.Uid = mobcentAuthorizationResult.Uid;
             credential.Token = mobcentAuthorizationResult.Token;
             credential.Secret = mobcentAuthorizationResult.Secret;
-            credential.Avatar = mobcentAuthorizationResult.Avatar;
             credential.Level = mobcentAuthorizationResult.UserTitleLevel;
         }
     }

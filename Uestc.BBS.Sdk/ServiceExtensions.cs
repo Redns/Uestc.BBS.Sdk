@@ -9,6 +9,7 @@ using Uestc.BBS.Sdk.Services.Thread.ThreadContent;
 using Uestc.BBS.Sdk.Services.Thread.ThreadList;
 using Uestc.BBS.Sdk.Services.Thread.ThreadReply;
 using Uestc.BBS.Sdk.Services.Thread.ThreadSearch;
+using Uestc.BBS.Sdk.Services.User.Friend;
 
 namespace Uestc.BBS.Sdk
 {
@@ -175,6 +176,14 @@ namespace Uestc.BBS.Sdk
         public static IServiceCollection AddDailySentencesService(
             this IServiceCollection services
         ) => services.AddTransient<IDailySentenceService, DailySentenceService>();
+
+        /// <summary>
+        /// 注册 <see cref="IFriendListService"/> 实例
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddFriendListService(this IServiceCollection services) =>
+            services.AddTransient<IFriendListService, WebFriendListService>();
     }
 
     public class MobcentAuthorizationHandler(string token, string secret) : DelegatingHandler
@@ -186,12 +195,12 @@ namespace Uestc.BBS.Sdk
         {
             if (request.RequestUri is not null)
             {
-                var ub = new UriBuilder(request.RequestUri);
-                var q = HttpUtility.ParseQueryString(ub.Query ?? string.Empty);
-                q["accessToken"] = token;
-                q["accessSecret"] = secret;
-                ub.Query = q.ToString();
-                request.RequestUri = ub.Uri;
+                var uribuilder = new UriBuilder(request.RequestUri);
+                var query = HttpUtility.ParseQueryString(uribuilder.Query ?? string.Empty);
+                query["accessToken"] = token;
+                query["accessSecret"] = secret;
+                uribuilder.Query = query.ToString();
+                request.RequestUri = uribuilder.Uri;
             }
 
             return base.SendAsync(request, cancellationToken);

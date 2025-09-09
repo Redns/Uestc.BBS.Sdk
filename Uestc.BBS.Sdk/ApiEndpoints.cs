@@ -81,6 +81,11 @@
         /// 用户头像
         /// </summary>
         public const string USER_AVATAR_URL = "uc_server/data/avatar/000";
+
+        /// <summary>
+        /// 用户好友
+        /// </summary>
+        public const string USER_FRIEND_LIST_URL = "home.php";
         #endregion
     }
 }

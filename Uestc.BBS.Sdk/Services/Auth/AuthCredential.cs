@@ -62,11 +62,6 @@ namespace Uestc.BBS.Sdk.Services.Auth
             && !string.IsNullOrEmpty(Authorization);
 
         /// <summary>
-        /// 头像
-        /// </summary>
-        public string Avatar { get; set; } = string.Empty;
-
-        /// <summary>
         /// 用户等级
         /// </summary>
         public uint Level { get; set; } = 1;
@@ -82,6 +77,11 @@ namespace Uestc.BBS.Sdk.Services.Auth
         public string Signature { get; set; } = string.Empty;
 
         /// <summary>
+        ///  UID 黑名单
+        /// </summary>
+        public List<BlacklistUser> BlacklistUsers { get; set; } = [];
+
+        /// <summary>
         /// 此处序列化用户 AutoCompleteBox 显示
         /// </summary>
         /// <returns></returns>
@@ -89,6 +89,16 @@ namespace Uestc.BBS.Sdk.Services.Auth
         {
             return Username;
         }
+    }
+
+    /// <summary>
+    /// 黑名单用户
+    /// </summary>
+    public class BlacklistUser
+    {
+        public uint Uid { get; set; }
+
+        public string Username { get; set; } = string.Empty;
     }
 
     [JsonSerializable(typeof(AuthCredential))]
