@@ -46,7 +46,7 @@ namespace Uestc.BBS.Sdk.Services.User.Friend
         }
 
         [GeneratedRegex(
-            @"<a\s+href=""https://bbs\.uestcer\.org/home\.php\?mod=space&amp;uid=(?<uid>\d+)"">(?<name>[^<]+)</a>",
+            @"<a\s+href=""https://[^""]+/home\.php\?mod=space&amp;uid=(?<uid>\d+)"">(?<name>[^<]+)</a>",
             RegexOptions.IgnoreCase | RegexOptions.Compiled,
             "zh-CN"
         )]

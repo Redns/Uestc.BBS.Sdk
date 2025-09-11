@@ -94,6 +94,11 @@ namespace Uestc.BBS.Sdk.Services.Thread
         /// 用户性别
         /// </summary>
         public Gender UserGender { get; set; }
+
+        /// <summary>
+        /// 是否包含投票
+        /// </summary>
+        public bool HasVote { get; set; }
     }
 
     /// <summary>

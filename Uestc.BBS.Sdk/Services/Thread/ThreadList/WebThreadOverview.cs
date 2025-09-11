@@ -238,6 +238,7 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
                     baseUri,
                     $"uc_server/avatar.php?uid={Uid}&size=middle"
                 ).AbsoluteUri,
+                HasVote = false, // TODO 获取是否存在投票
             };
     }
 }

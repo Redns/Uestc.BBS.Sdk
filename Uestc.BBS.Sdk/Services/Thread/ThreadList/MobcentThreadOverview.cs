@@ -205,6 +205,7 @@ namespace Uestc.BBS.Sdk.Services.Thread.ThreadList
                 Username = Username,
                 UserAvatar = UserAvatar,
                 UserGender = Gender,
+                HasVote = HasVote,
             };
     }
 }
