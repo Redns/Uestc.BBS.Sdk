@@ -24,4 +24,8 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Uestc.BBS.Sdk.Analyzer\Uestc.BBS.Sdk.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+  </ItemGroup>
+
 </Project>

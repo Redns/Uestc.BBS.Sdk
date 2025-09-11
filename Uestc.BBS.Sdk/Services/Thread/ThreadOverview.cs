@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using FastEnumUtility;
+using Uestc.BBS.Sdk.Attributes;
 using Uestc.BBS.Sdk.Services.Thread.ThreadList;
 using Uestc.BBS.Sdk.Services.User;
 
@@ -8,7 +9,8 @@ namespace Uestc.BBS.Sdk.Services.Thread
     /// <summary>
     /// 主题（帖子）
     /// </summary>
-    public class ThreadOverview
+    [AotReflection]
+    public partial class ThreadOverview
     {
         /// <summary>
         /// 主题 ID
