@@ -2,7 +2,6 @@
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Uestc.BBS.Sdk.Services.Auth;
-using Uestc.BBS.Sdk.Services.Forum;
 using Uestc.BBS.Sdk.Services.System;
 using Uestc.BBS.Sdk.Services.Thread;
 using Uestc.BBS.Sdk.Services.Thread.ThreadContent;
@@ -19,6 +18,14 @@ namespace Uestc.BBS.Sdk
 
         public const string MOBCENT_API = "mobcent";
 
+        /// <summary>
+        /// 注册 Web API 服务
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="getCookies"></param>
+        /// <param name="getAuthorization"></param>
+        /// <param name="getBaseUrl"></param>
+        /// <returns></returns>
         public static IHttpClientBuilder UseWebServices(
             this IServiceCollection services,
             Func<IServiceProvider, CookieContainer?> getCookies,
@@ -72,6 +79,13 @@ namespace Uestc.BBS.Sdk
                 )
                 .AddAsKeyed();
 
+        /// <summary>
+        /// 注册 Mobcent API 服务
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="getTokenAndSecret"></param>
+        /// <param name="getBaseUrl"></param>
+        /// <returns></returns>
         public static IHttpClientBuilder UseMobcentServices(
             this IServiceCollection services,
             Func<IServiceProvider, (string token, string secret)> getTokenAndSecret,
@@ -156,15 +170,6 @@ namespace Uestc.BBS.Sdk
         ) => services.AddKeyedTransient<IThreadReplyService, WebThreadReplyService>(WEB_API);
 
         /// <summary>
-        /// 注册 <see cref="IForumHomeService"/> 实例
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="getBaseUrl">API 基地址</param>
-        /// <returns></returns>
-        public static IServiceCollection AddForumHomeService(this IServiceCollection services) =>
-            services.AddTransient<IForumHomeService, ForumHomeService>();
-
-        /// <summary>
         /// 注册 <see cref="ISearchService"/> 实例
         /// </summary>
         /// <param name="services"></param>
@@ -184,6 +189,23 @@ namespace Uestc.BBS.Sdk
         /// <returns></returns>
         public static IServiceCollection AddFriendListService(this IServiceCollection services) =>
             services.AddTransient<IFriendListService, WebFriendListService>();
+
+        /// <summary>
+        /// 注册 <see cref="IAnnouncementService"/> 实例
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddWebAnnouncementService(
+            this IServiceCollection services
+        ) => services.AddKeyedTransient<IAnnouncementService, WebAnnouncementService>(WEB_API);
+
+        /// <summary>
+        /// 注册 <see cref="IGlobalStatusService"/> 实例
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddWebGlobalStatusService(this IServiceCollection services) =>
+            services.AddKeyedTransient<IGlobalStatusService, WebGlobalStatusService>(WEB_API);
     }
 
     public class MobcentAuthorizationHandler(string token, string secret) : DelegatingHandler

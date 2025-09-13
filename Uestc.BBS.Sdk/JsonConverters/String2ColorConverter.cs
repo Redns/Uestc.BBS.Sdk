@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Uestc.BBS.Sdk.Helpers;
 
 namespace Uestc.BBS.Sdk.JsonConverters
 {
@@ -17,15 +18,13 @@ namespace Uestc.BBS.Sdk.JsonConverters
         {
             var hex = reader.GetString();
 
-            return string.IsNullOrEmpty(hex) || !hex.StartsWith('#')
-                ? Color.Empty
-                : Color.FromArgb(Convert.ToInt32(hex[1..], 16));
+            return !string.IsNullOrEmpty(hex) ? ColorHelper.FromHex(hex) : Color.Empty;
         }
 
         public override void Write(
             Utf8JsonWriter writer,
             Color value,
             JsonSerializerOptions options
-        ) => writer.WriteStringValue($"#{value.R:X2}{value.G:X2}{value.B:X2}");
+        ) => writer.WriteStringValue($"#{value.A:X2}{value.R:X2}{value.G:X2}{value.B:X2}");
     }
 }

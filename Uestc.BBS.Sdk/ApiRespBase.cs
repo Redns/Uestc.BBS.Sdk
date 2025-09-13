@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using FastEnumUtility;
-using Uestc.BBS.Sdk.Services.User;
 
 namespace Uestc.BBS.Sdk
 {
@@ -24,18 +23,58 @@ namespace Uestc.BBS.Sdk
         /// <summary>
         /// 用户信息
         /// </summary>
-        public User? User { get; set; }
+        public UserInfo? User { get; set; }
 
         /// <summary>
         /// 系统信息
         /// </summary>
-        public ApiStatus? System { get; set; }
+        public ApiInfo? System { get; set; }
+    }
+
+    /// <summary>
+    /// 用户信息
+    /// </summary>
+    public class UserInfo
+    {
+        /// <summary>
+        /// 用户 ID
+        /// </summary>
+        public uint Uid { get; set; }
+
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string Username { get; set; } = string.Empty;
+
+        /// <summary>
+        /// TODO WHAT'S THIS?
+        /// </summary>
+        [JsonPropertyName("new_pm")]
+        public uint NewPm { get; set; }
+
+        /// <summary>
+        /// TODO WHAT'S THIS?
+        /// </summary>
+        [JsonPropertyName("new_pm_legacy")]
+        public bool NewPmLegacy { get; set; }
+
+        /// <summary>
+        /// 新消息数量
+        /// </summary>
+        [JsonPropertyName("new_notification")]
+        public uint NewNotificaionCount { get; set; }
+
+        /// <summary>
+        /// TODO WHAT'S THIS?
+        /// </summary>
+        [JsonPropertyName("new_grouppm_legacy")]
+        public bool NewGrouppmLegacy { get; set; }
     }
 
     /// <summary>
     /// API 状态
     /// </summary>
-    public class ApiStatus
+    public class ApiInfo
     {
         [JsonPropertyName("settings_version")]
         public uint Version { get; set; }

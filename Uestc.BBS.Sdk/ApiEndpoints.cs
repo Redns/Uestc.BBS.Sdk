@@ -34,7 +34,12 @@
         /// <summary>
         /// 获取首页信息
         /// </summary>
-        public const string FORUM_HOME_URL = "star/api/v1/index?global_stat=1&announcement=1";
+        public const string GET_GLOBAL_STATUS = "star/api/v1/index?global_stat=1";
+
+        /// <summary>
+        /// 获取公告列表
+        /// </summary>
+        public const string GET_ANNOUNCEMENT_LIST_URL = "star/api/v1/index?announcement=1";
 
         /// <summary>
         /// 获取每日一句
